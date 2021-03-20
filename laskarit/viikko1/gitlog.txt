@@ -1,0 +1,105 @@
+commit bc1c1be380a1f88f91076bb0eadc896c776c9719
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 10:17:52 2021 +0200
+
+    turhia muutoksia
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 03732587514db3fd6a7c5f07ff46f3d583dff6c2
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 10:17:05 2021 +0200
+
+    tein muutoksen
+
+ tiedostoja/file3 | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit 9af23ed718dc0817cba19af77afbfd2439c28ed5
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 10:15:52 2021 +0200
+
+    uusia tiedostoja
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2a02b5a50cd76052d0dee5d938984c92e275ea77
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 10:00:53 2021 +0200
+
+    turhia muutoksia
+
+ eka.txt    | 1 -
+ kolmas.txt | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 4269b9776ff281620850541a0dfe30cf1178ba9f
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:59:32 2021 +0200
+
+    nimenmuutos
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 48355234a29f802cb831bc13fddf4f5d78ac4e6f
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:58:02 2021 +0200
+
+    commit
+
+ tiedosto.txt | 7 +++++++
+ toinen.txt   | 2 --
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+commit cfb7bb9e3b08ccb7b9fece5878158e452647c798
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:19:47 2021 +0200
+
+    tämä on taas commit
+
+ stuff/jokintiedosto.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+commit e23af9f915cea2e0f70bdbe4c51c2348523b28d2
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:18:54 2021 +0200
+
+    tämä on commit
+
+ kolmas.txt | 2 ++
+ toinen.txt | 2 ++
+ 2 files changed, 4 insertions(+)
+
+commit cf73a7a4e60fb2b568f9469f40d05915e85e37c8
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:18:19 2021 +0200
+
+    kolmas lisäys
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c887d576b51cdb1c41ad2001a3e3859b240404bd
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:17:04 2021 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit de9fe26804e3020b0c15e39423ff918177459551
+Author: Heikki Venhola <heikki.venhola@helsinki.fi>
+Date:   Sat Mar 20 09:15:47 2021 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
