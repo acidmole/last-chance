@@ -5,6 +5,7 @@
  */
 package lastchance.ui;
 
+import lastchance.domain.Scoreboard;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import lastchance.dao.FileScoreDao;
+import lastchance.domain.LastChanceService;
 import lastchance.ui.gun.Gunshot;
 import lastchance.ui.robot.Robot;
 
@@ -27,14 +30,25 @@ import lastchance.ui.robot.Robot;
  */
 public class LastChanceUi extends Application {
     
+    private LastChanceService lcService;
+    
+    @Override
+    public void init() {
+        
+        // not yet operating
+        try {
+            FileScoreDao scoreDao = new FileScoreDao("foo.txt");
+            lcService = new LastChanceService(scoreDao);
+        } catch (Exception e) {
+        }
+    }
+    
     @Override
     public void start(Stage stage) {
         
         Pane layout = new Pane();
         layout.setPrefSize(800, 600);
         
-        Scoreboard sb = new Scoreboard();
-        layout.getChildren().add(sb.getNode());
         layout.getChildren().add(new Base());
         Gun gun = new Gun();
         layout.getChildren().add(gun);
