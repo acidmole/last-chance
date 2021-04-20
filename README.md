@@ -1,9 +1,11 @@
 # Ohjelmistotekniikka, harjoitustyö
 
 Ohjelmaa voi testata hakemistossa lastchance/ komennolla
-...
+
+```
 mvn compile exec:java -Dexec.mainClass=lastchance.ui.LastChanceUi
-...
+```
+
 
 ## Dokumentaatio
 
