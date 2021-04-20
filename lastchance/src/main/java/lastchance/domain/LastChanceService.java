@@ -6,6 +6,7 @@
 package lastchance.domain;
 
 import lastchance.dao.FileScoreDao;
+import lastchance.dao.ScoreDao;
 
 /**
  *
@@ -13,12 +14,16 @@ import lastchance.dao.FileScoreDao;
  */
 public class LastChanceService {
     
-        private Scoreboard sb;
-        private FileScoreDao scoreDao;
+    private Scoreboard sb;
+    private ScoreDao scoreDao;
     
-    public LastChanceService(FileScoreDao scoreDao) {
+    public LastChanceService(ScoreDao scoreDao) {
         this.scoreDao = scoreDao;
         this.sb = new Scoreboard();
+    }
+    
+    public Scoreboard getScoreboard() {
+        return this.sb;
     }
     
     public boolean quit(String name) {
@@ -31,6 +36,7 @@ public class LastChanceService {
         }
     }
     
+    // not yet finished (or even started)
     public boolean restart() {
         return false;
     }

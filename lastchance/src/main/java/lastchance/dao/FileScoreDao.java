@@ -31,7 +31,7 @@ public class FileScoreDao implements ScoreDao {
 
     @Override
     public List<String> getTopScores() {
-        return null;
+        return this.scoreList;
     }
     
     @Override

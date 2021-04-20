@@ -19,7 +19,7 @@ public class Scoreboard {
     }
     
     public void setScore(int score) {
-       this.score = (score);
+        this.score = (score);
     }
     
     public void raiseScore(int amount) {
