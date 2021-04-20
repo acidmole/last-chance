@@ -5,8 +5,8 @@ Sovelluksen tarkoituksena on ohjata ruudussa näkyvää tykin piippua ja ampua r
 
 ## Suunnitellut toiminnallisuudet
 Peliin on suunnitteilla seuraavat toiminnallisuudet:
-* Tykin piippua voi ohjata oikealle ja vasemmalle. (tehty)
-* Tykillä voi ampua ammuksen, joka lähtee ohjatun kulman mukaisesti. (tehty)
+* Tykin piippua voi ohjata oikealle ja vasemmalle nuolinäppäimillä. (tehty)
+* Ylös nuolinäppäimellä ammuttaessa voi tykillä ampua ammuksen, joka lähtee tykin kulman mukaisesti. (tehty)
 * Ammuksen osuessa robottiin se tuhoutuu. (tehty)
 * Tuhotuista roboteista saa pisteitä.
 * Jos robotti laskeutuu maahan, se lähtee kulkemaan maata pitkin kohti komentokeskusta. (tehty)
