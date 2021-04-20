@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+    <suppress files="lastchance.ui.LastChanceUi.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.Base.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.Dashboard.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.Scoreboard.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.ScoreboardLayout.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.gun.Gun.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.gun.Gunshot.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="lastchance.ui.robot.Robot.java" checks="[a-zA-Z0-9]*"/>
+</suppressions>

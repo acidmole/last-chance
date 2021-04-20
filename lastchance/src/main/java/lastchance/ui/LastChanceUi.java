@@ -40,6 +40,7 @@ public class LastChanceUi extends Application {
         layout.getChildren().add(gun);
         
         Image image = new Image("file:robo.png");
+        
         List<Robot> robots = new ArrayList<>();
         robots.add(new Robot(image, 40, 20, 800, 600));
         robots.add(new Robot(image, 40, 20, 800, 600));
