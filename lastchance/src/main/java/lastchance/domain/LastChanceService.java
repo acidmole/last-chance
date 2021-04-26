@@ -16,10 +16,14 @@ public class LastChanceService {
     
     private Scoreboard sb;
     private ScoreDao scoreDao;
+    private int hitValue;
+    private double robotAppearProbability;
     
-    public LastChanceService(ScoreDao scoreDao) {
+    public LastChanceService(ScoreDao scoreDao, String[] args) {
         this.scoreDao = scoreDao;
         this.sb = new Scoreboard();
+        this.hitValue = Integer.valueOf(args[0]);
+        this.robotAppearProbability = Double.valueOf(args[1]);
     }
     
     public Scoreboard getScoreboard() {
@@ -36,8 +40,21 @@ public class LastChanceService {
         }
     }
     
+    public double addPoints() {
+        this.sb.raiseScore(hitValue);
+        if (this.sb.getScore() % 100 == 0) {
+            this.robotAppearProbability += 0.0005;
+        }
+        return this.robotAppearProbability;
+    }
+    
+    public double getRobotAppearProbability() {
+        return this.robotAppearProbability;
+    }
+    
     // not yet finished (or even started)
     public boolean restart() {
+        this.sb.setScore(0);
         return false;
     }
 }

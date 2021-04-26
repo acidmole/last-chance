@@ -9,12 +9,12 @@ public class Robot {
     
     private ImageView image;
     private boolean isLanded;
-    private final int screenHeight;
-    private final int screenWidth;
+    private final double screenHeight;
+    private final double screenWidth;
     private double walkingSpeed;
     private boolean destroyed;
     
-    public Robot (Image i, double height, double width, int screenWidth, int screenHeight) {
+    public Robot (Image i, double height, double width, double screenWidth, double screenHeight) {
         this.image = new ImageView(i);
         this.isLanded = false;
         this.screenHeight = screenHeight;
@@ -23,7 +23,7 @@ public class Robot {
         this.destroyed = false;
         
         Random rn = new Random();
-        this.image.setX(rn.nextDouble()*screenWidth);
+        this.image.setX(rn.nextDouble()*(screenWidth - width));
         this.image.setY(50);
         image.setFitHeight(height);
         image.setFitWidth(width);
@@ -51,6 +51,7 @@ public class Robot {
     }
     
     public void walk() {
+        this.image.setRotate(this.image.getRotate() + 1.0);
         this.image.setX(this.image.getX() + this.walkingSpeed);
     }
     

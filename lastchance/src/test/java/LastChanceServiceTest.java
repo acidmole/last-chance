@@ -32,7 +32,8 @@ public class LastChanceServiceTest {
             scoreDao = new FakeScoreDao("foo");
         } catch (Exception e) {
         }
-        lcs = new LastChanceService(scoreDao);
+        String[] emptyArgs = {"100", "0.0005"};
+        lcs = new LastChanceService(scoreDao, emptyArgs);
         lcs.getScoreboard().setScore(500);
         lcs.quit("Jorma");
     }
@@ -40,6 +41,15 @@ public class LastChanceServiceTest {
     @Test
     public void quitSavesInformationCorrectly() {
         assertEquals("Jorma;500", scoreDao.getTopScores().get(0));
+    }
+    
+    @Test
+    public void addPointsWorksProperly() {
+        lcs.addPoints();
+        assertEquals(600, lcs.getScoreboard().getScore());
+        assertEquals(0.001, lcs.getRobotAppearProbability(), 0.0001);
+        
+        
     }
 }
   

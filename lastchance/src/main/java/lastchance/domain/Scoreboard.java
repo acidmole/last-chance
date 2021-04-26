@@ -10,7 +10,6 @@ public class Scoreboard {
     private int score;
     
     public Scoreboard() {
-    
         this.score = 0;
     }
     

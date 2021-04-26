@@ -5,7 +5,6 @@
  */
 package lastchance.ui;
 
-import lastchance.domain.Scoreboard;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -16,13 +15,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import lastchance.dao.FileScoreDao;
 import lastchance.domain.LastChanceService;
 import lastchance.ui.gun.Gunshot;
 import lastchance.ui.robot.Robot;
+
 
 /**
  *
@@ -31,14 +33,14 @@ import lastchance.ui.robot.Robot;
 public class LastChanceUi extends Application {
     
     private LastChanceService lcService;
+
     
     @Override
     public void init() {
-        
-        // not yet operating
+        String[] configs = {"10", "0.00075"};
         try {
             FileScoreDao scoreDao = new FileScoreDao("foo.txt");
-            lcService = new LastChanceService(scoreDao);
+            lcService = new LastChanceService(scoreDao, configs);
         } catch (Exception e) {
         }
     }
@@ -48,20 +50,53 @@ public class LastChanceUi extends Application {
         
         Pane layout = new Pane();
         layout.setPrefSize(800, 600);
-        
-        layout.getChildren().add(new Base());
+        Base base = new Base();
+        layout.getChildren().add(base);
         Gun gun = new Gun();
         layout.getChildren().add(gun);
+        ScoreboardLayout sbLayout = new ScoreboardLayout();
+        layout.getChildren().add(sbLayout);
+        sbLayout.setPrefWidth(800);
+        sbLayout.setPrefHeight(50);
         
-        Image image = new Image("file:robo.png");
+        
+        
+        Image image = new Image("file:wheel.jpg");
+        
         
         List<Robot> robots = new ArrayList<>();
-        robots.add(new Robot(image, 40, 20, 800, 600));
-        robots.add(new Robot(image, 40, 20, 800, 600));
-        robots.add(new Robot(image, 40, 20, 800, 600));
-        robots.forEach(robot -> layout.getChildren().add(robot.getImage()));
+        Random rn = new Random();
         
         Scene scene = new Scene(layout);
+        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                layout.getChildren().add(gun.fire());
+            }
+        });
+        
+        scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gun.rotateWithMouse(event.getX(), event.getY());
+            }
+        });
+
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.LEFT) {
+                    gun.rotateLeft();
+                }
+                if (event.getCode() == KeyCode.RIGHT) {
+                    gun.rotateRight();
+                }
+                if (event.getCode() == KeyCode.UP) {
+                    layout.getChildren().add(gun.fire());
+                }
+            }
+        });
+                
         stage.setScene(scene);
         stage.show();
         
@@ -69,37 +104,38 @@ public class LastChanceUi extends Application {
             
             @Override
             public void handle(long now) {
-            
-                scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-                    @Override
-                    public void handle(KeyEvent event) {
-                        if (event.getCode() == KeyCode.LEFT) {
-                            gun.rotateLeft();
-                        }
-                        if (event.getCode() == KeyCode.RIGHT) {
-                            gun.rotateRight();
-                        }
-                        if (event.getCode() == KeyCode.UP) {
-                            layout.getChildren().add(gun.fire());
-                        }
+
+                robots.forEach(robot -> {
+                    robot.move();
+                    if(base.intersects(robot.getImage().getBoundsInParent())) {
+                        this.stop();
                     }
+                        });
+                
+                gun.getGunshots().forEach(gunshot -> {
+                        gunshot.move();
+                        if(gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800 
+                                || gunshot.getCenterY() < 0 || gunshot.getCenterY() > 600) {
+                            gunshot.destroy();
+                        }
+                            
                 });
-                robots.forEach(robot -> robot.move());
-                gun.getGunshots().forEach(gunshot -> gunshot.move());
                 gun.getGunshots().forEach(gunshot -> {
                     for(Robot robot : robots) {
                         if(gunshot.intersects(robot.getImage().getBoundsInParent())) {
                             robot.destroy();
                             gunshot.destroy();
-                        }
+                            lcService.addPoints();
+                            sbLayout.setScore(lcService.getScoreboard().getScore());
+                        }                    
                     }
                 });
+                
                 List<Gunshot> destroyedGunshots = gun.getGunshots().stream()
                         .filter(gunshot -> gunshot.isDestroyed())
                         .collect(Collectors.toList());
                 destroyedGunshots.forEach(gunshot -> {
                     gun.getGunshots().remove(gunshot);
-                    System.out.println(gunshot.isDestroyed());
                     layout.getChildren().remove(gunshot);
                 });
                 
@@ -110,6 +146,13 @@ public class LastChanceUi extends Application {
                     robots.remove(robot);
                     layout.getChildren().remove(robot.getImage());
                 });
+                
+                if(rn.nextDouble() < lcService.getRobotAppearProbability()) {
+                    Robot robot = new Robot(image, 40, 40, 800, 600);
+                    layout.getChildren().add(robot.getImage());
+                    robots.add(robot);
+                }
+                
             }
         }.start();
 

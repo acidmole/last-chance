@@ -32,7 +32,7 @@
                 <configuration>
                     <release>${maven.compiler.release}</release>
                     <mainClass>org.openjfx.App</mainClass>
-                    <mainClass>lastchance.ui.LastChanceUi</mainClass>
+                    <mainClass>lastchance.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -42,6 +42,8 @@
                 <configuration>
                     <excludes>
                         <exclude>lastchance/ui/*</exclude>
+                        <exclude>lastchance/ui/gun/*</exclude>
+                        <exclude>lastchance/ui/robot/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

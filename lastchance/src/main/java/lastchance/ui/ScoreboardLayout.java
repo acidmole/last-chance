@@ -29,7 +29,7 @@ public class ScoreboardLayout extends HBox {
     
     public ScoreboardLayout() {
         super(10);
-        this.setSpacing(10);
+        this.setSpacing(80);
         this.pause = new Button("Quit");
         this.restart = new Button("Restart");
         this.score = new Label("Pisteet: ");
@@ -40,7 +40,7 @@ public class ScoreboardLayout extends HBox {
         
     }
     
-    public void setScore(int scr) {
-        this.score.setText("Pisteet: " + scr);
+    public void setScore(int score) {
+        this.score.setText("Pisteet: " + score);
     }
 }

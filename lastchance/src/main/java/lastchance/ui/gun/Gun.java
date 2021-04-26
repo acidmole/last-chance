@@ -24,6 +24,15 @@ public class Gun extends Rectangle {
         this.setStroke(Color.BLACK);
         this.gunshots = new ArrayList<>();
     }
+
+    public void rotateWithMouse(double x, double y) {
+            this.setRotate(-1 * Math.toDegrees(Math.atan2(395-x, 600-y)));
+            if(this.getRotate() > 75) {
+                this.setRotate(75);
+            } else if(this.getRotate() < -75) {
+                this.setRotate(-75);
+            }
+    }
     
    
     public void rotateRight() {
