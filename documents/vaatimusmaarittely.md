@@ -6,12 +6,13 @@ Sovelluksen tarkoituksena on ohjata ruudussa näkyvää tykin piippua ja ampua r
 ## Suunnitellut toiminnallisuudet
 Peliin on suunnitteilla seuraavat toiminnallisuudet:
 * Tykin piippua voi ohjata oikealle ja vasemmalle nuolinäppäimillä. (tehty)
+* Tykin piippua voi ohjata myös hiirellä, jolloin pelattavauus paranee. Hiiren vasenta nappia painettaessa tykki ampuu. (uusi ominaisuus, tehty)
 * Ylös nuolinäppäimellä painettaessa voi tykillä ampua ammuksen, joka lähtee tykin kulman mukaisesti. (tehty)
 * Ammuksen osuessa robottiin se tuhoutuu. (tehty)
-* Tuhotuista roboteista saa pisteitä.
+* Tuhotuista roboteista saa pisteitä. (tehty)
 * Jos robotti laskeutuu maahan, se lähtee kulkemaan maata pitkin kohti komentokeskusta. (tehty)
-* Jos robotti osuu komentokeskukseen, peli päättyy.
-* Peli vaikeutuu säännöllisin väliajoin, kun robottien ilmestymisnopeus kasvaa.
+* Jos robotti osuu komentokeskukseen, peli päättyy. (tehty)
+* Peli vaikeutuu säännöllisin väliajoin, kun robottien ilmestymisnopeus kasvaa. (tehty)
 * Parhaista tuloksista pidetään kirjaa.
 * Pelissä on jännittävä, kiehtova ja leikillinen itämaistyylinen musiikki.
 

@@ -61,7 +61,7 @@ public class LastChanceUi extends Application {
         
         
         
-        Image image = new Image("file:wheel.jpg");
+        Image image = new Image("file:robo.png");
         
         
         List<Robot> robots = new ArrayList<>();
@@ -120,6 +120,8 @@ public class LastChanceUi extends Application {
                         }
                             
                 });
+                
+                
                 gun.getGunshots().forEach(gunshot -> {
                     for(Robot robot : robots) {
                         if(gunshot.intersects(robot.getImage().getBoundsInParent())) {
@@ -148,7 +150,7 @@ public class LastChanceUi extends Application {
                 });
                 
                 if(rn.nextDouble() < lcService.getRobotAppearProbability()) {
-                    Robot robot = new Robot(image, 40, 40, 800, 600);
+                    Robot robot = new Robot(image, 40, 20, 800, 600);
                     layout.getChildren().add(robot.getImage());
                     robots.add(robot);
                 }
