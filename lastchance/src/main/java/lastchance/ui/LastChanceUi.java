@@ -16,10 +16,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import lastchance.audio.Jukebox;
 import lastchance.dao.FileScoreDao;
 import lastchance.domain.LastChanceService;
 import lastchance.ui.gun.Gunshot;
@@ -46,7 +49,7 @@ public class LastChanceUi extends Application {
     }
     
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
         
         Pane layout = new Pane();
         layout.setPrefSize(800, 600);
@@ -58,7 +61,7 @@ public class LastChanceUi extends Application {
         layout.getChildren().add(sbLayout);
         sbLayout.setPrefWidth(800);
         sbLayout.setPrefHeight(50);
-        
+        Jukebox jukebox = new Jukebox("main_theme.mp3");
         
         
         Image image = new Image("file:robo.png");
@@ -101,10 +104,28 @@ public class LastChanceUi extends Application {
         stage.show();
         
         new AnimationTimer() {
-            
+        
+        private volatile boolean jukeboxComplete = true;
+
             @Override
             public void handle(long now) {
+                
+                if(this.jukeboxComplete) {
+                    this.jukeboxComplete = false;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                jukebox.play();
+                                jukebox.close();
+                            } catch (Exception e) {
+                            }
+                        }
+                    }.start();
+                    
+                }
 
+                
                 robots.forEach(robot -> {
                     robot.move();
                     if(base.intersects(robot.getImage().getBoundsInParent())) {
