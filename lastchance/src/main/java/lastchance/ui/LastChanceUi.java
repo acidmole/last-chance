@@ -5,6 +5,7 @@
  */
 package lastchance.ui;
 
+import java.util.ArrayDeque;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -36,11 +37,10 @@ import lastchance.ui.robot.Robot;
 public class LastChanceUi extends Application {
     
     private LastChanceService lcService;
-
     
     @Override
     public void init() {
-        String[] configs = {"10", "0.00075"};
+        String[] configs = {"10", "0.001"};
         try {
             FileScoreDao scoreDao = new FileScoreDao("foo.txt");
             lcService = new LastChanceService(scoreDao, configs);
@@ -99,39 +99,26 @@ public class LastChanceUi extends Application {
                 }
             }
         });
-                
+
+        Thread audioThread = new Thread(jukebox);
+        
         stage.setScene(scene);
         stage.show();
+        audioThread.start();
+                
         
         new AnimationTimer() {
-        
-        private volatile boolean jukeboxComplete = true;
-
+            
+            
             @Override
             public void handle(long now) {
-                
-                if(this.jukeboxComplete) {
-                    this.jukeboxComplete = false;
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            try {
-                                jukebox.play();
-                                jukebox.close();
-                            } catch (Exception e) {
-                            }
-                        }
-                    }.start();
-                    
-                }
-
                 
                 robots.forEach(robot -> {
                     robot.move();
                     if(base.intersects(robot.getImage().getBoundsInParent())) {
                         this.stop();
                     }
-                        });
+                });
                 
                 gun.getGunshots().forEach(gunshot -> {
                         gunshot.move();
@@ -145,12 +132,14 @@ public class LastChanceUi extends Application {
                 
                 gun.getGunshots().forEach(gunshot -> {
                     for(Robot robot : robots) {
-                        if(gunshot.intersects(robot.getImage().getBoundsInParent())) {
+                        if(gunshot.getCenterY() < 0 || gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800) {
+                            gunshot.destroy();
+                        } else if(gunshot.intersects(robot.getImage().getBoundsInParent())) {
                             robot.destroy();
                             gunshot.destroy();
                             lcService.addPoints();
                             sbLayout.setScore(lcService.getScoreboard().getScore());
-                        }                    
+                        }
                     }
                 });
                 
@@ -178,7 +167,12 @@ public class LastChanceUi extends Application {
                 
             }
         }.start();
-
+        
+        }
+    
+    @Override
+    public void stop() {
+    
     }
     
     

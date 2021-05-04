@@ -10,29 +10,35 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 /**
- *
- * @author hede
+ * A class responsible for playing audio files run by threads
+ * 
  */
-public class Jukebox extends Player {
+public class Jukebox extends Player implements Runnable {
     
-    private boolean initialStart;
-    
+    /**
+     * 
+     * @param fileURI URI for FileInputStream
+     * @throws Exception if file can't be loaded
+     */
     public Jukebox(String fileURI) throws Exception{
         super(new FileInputStream(fileURI));
-        this.initialStart = true;
     }
     
-    
+    /**
+     * For playing the actual audio file
+     */
     @Override
-    public boolean isComplete() {
-            return super.isComplete();
-    }
-    
-    @Override
-    public void play(){
+    public void run() {
         try {
             super.play();
-        } catch (Exception e) {
+        } catch (JavaLayerException e) {
         }
+    }
+    
+    /**
+     * Stopping if program is closed
+     */
+    public void stop() {
+        super.close();
     }
 }
