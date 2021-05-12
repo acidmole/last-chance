@@ -58,7 +58,7 @@ public class LastChanceUi extends Application {
         layout.getChildren().add(sbLayout);
         sbLayout.setPrefWidth(800);
         sbLayout.setPrefHeight(50);
-        Jukebox jukebox = new Jukebox("main_theme.mp3");
+        Jukebox jukebox = new Jukebox("klzmr.mp3");
         
         
         Image image = new Image("file:robo.png");
@@ -103,7 +103,6 @@ public class LastChanceUi extends Application {
                 
         
         new AnimationTimer() {
-            
             
             @Override
             public void handle(long now) {
@@ -155,7 +154,7 @@ public class LastChanceUi extends Application {
                     layout.getChildren().remove(robot.getImage());
                 });
                 
-                if(rn.nextDouble() < lcService.getRobotAppearProbability()) {
+                if(lcService.hasNewRobotAppeared()) {
                     Robot robot = new Robot(image, 40, 20, 800, 600);
                     layout.getChildren().add(robot.getImage());
                     robots.add(robot);

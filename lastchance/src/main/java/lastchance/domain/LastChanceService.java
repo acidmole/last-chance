@@ -5,8 +5,10 @@
  */
 package lastchance.domain;
 
+import java.util.Random;
 import lastchance.dao.FileScoreDao;
 import lastchance.dao.ScoreDao;
+
 
 /**
  * The service for managing everything but the UI
@@ -17,19 +19,23 @@ public class LastChanceService {
     private ScoreDao scoreDao;
     private int hitValue;
     private double robotAppearProbability;
+    Random rnd;
     
     /**
      * Constructor sets score value for a succesful gunshot
      * It also sets the probability of generating new robots on every frame
      * 
      * @param scoreDao Data Access Object to store and load the score history
-     * @param args arguments to run the app
+     * @param args arguments to run the app: 
+     * [0] for robot score value
+     * [1] for robot appear probability on each frame cycle
      */
     public LastChanceService(ScoreDao scoreDao, String[] args) {
         this.scoreDao = scoreDao;
         this.sb = new Scoreboard();
         this.hitValue = Integer.valueOf(args[0]);
         this.robotAppearProbability = Double.valueOf(args[1]);
+        rnd = new Random();
     }
     
     /**
@@ -70,10 +76,11 @@ public class LastChanceService {
     
     /**
      *
-     * @return tells UI the probability of generating new robots
+     * @return if UI has to draw a new robot
      */
-    public double getRobotAppearProbability() {
-        return this.robotAppearProbability;
+    public boolean hasNewRobotAppeared() {
+        
+        return (rnd.nextDouble() < this.robotAppearProbability);
     }
     
     // not yet finished (or even started)

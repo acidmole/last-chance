@@ -34,18 +34,21 @@ public class Jukebox extends Thread {
      */
     @Override
     public void run() {
+        
         try {
+            System.out.println("Playing.");
             do {
                 FileInputStream stream = new FileInputStream(this.fileURI);
                 this.player = new AdvancedPlayer(stream);
                 this.player.play();
-            } while (this.keepPlaying = true);
+            } while (this.keepPlaying);
         } catch (Exception e) {
             
         }
     }
     
     public void close() {
+        System.out.println("Stopping.");
         this.keepPlaying = false;
         this.player.close();
         this.interrupt();
