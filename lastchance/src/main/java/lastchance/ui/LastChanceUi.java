@@ -5,7 +5,6 @@
  */
 package lastchance.ui;
 
-import java.util.ArrayDeque;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -17,8 +16,6 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -100,11 +97,9 @@ public class LastChanceUi extends Application {
             }
         });
 
-        Thread audioThread = new Thread(jukebox);
-        
+        jukebox.start();
         stage.setScene(scene);
         stage.show();
-        audioThread.start();
                 
         
         new AnimationTimer() {
@@ -116,6 +111,7 @@ public class LastChanceUi extends Application {
                 robots.forEach(robot -> {
                     robot.move();
                     if(base.intersects(robot.getImage().getBoundsInParent())) {
+                        jukebox.close();
                         this.stop();
                     }
                 });
@@ -172,7 +168,7 @@ public class LastChanceUi extends Application {
     
     @Override
     public void stop() {
-    
+        
     }
     
     

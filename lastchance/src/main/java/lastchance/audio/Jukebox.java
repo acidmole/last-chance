@@ -7,13 +7,17 @@ package lastchance.audio;
 
 import java.io.FileInputStream;
 import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
 /**
  * A class responsible for playing audio files run by threads
  * 
  */
-public class Jukebox extends Player implements Runnable {
+public class Jukebox extends Thread {
+   
+    private String fileURI;
+    private boolean keepPlaying;
+    private AdvancedPlayer player;
     
     /**
      * 
@@ -21,7 +25,8 @@ public class Jukebox extends Player implements Runnable {
      * @throws Exception if file can't be loaded
      */
     public Jukebox(String fileURI) throws Exception{
-        super(new FileInputStream(fileURI));
+        this.fileURI = fileURI;
+        this.keepPlaying = true;
     }
     
     /**
@@ -30,15 +35,19 @@ public class Jukebox extends Player implements Runnable {
     @Override
     public void run() {
         try {
-            super.play();
-        } catch (JavaLayerException e) {
+            do {
+                FileInputStream stream = new FileInputStream(this.fileURI);
+                this.player = new AdvancedPlayer(stream);
+                this.player.play();
+            } while (this.keepPlaying = true);
+        } catch (Exception e) {
+            
         }
     }
     
-    /**
-     * Stopping if program is closed
-     */
-    public void stop() {
-        super.close();
+    public void close() {
+        this.keepPlaying = false;
+        this.player.close();
+        this.interrupt();
     }
 }
