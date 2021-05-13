@@ -13,7 +13,7 @@ public class Base extends Circle {
         super();
         this.setRadius(50.0f);
         this.setCenterX(400.0);
-        this.setCenterY(600.0);
+        this.setCenterY(575.0);
     }
     
     

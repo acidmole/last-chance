@@ -47,7 +47,6 @@ public class LastChanceServiceTest {
     public void addPointsWorksProperly() {
         lcs.addPoints();
         assertEquals(600, lcs.getScoreboard().getScore());
-        assertEquals(0.0015, lcs.getRobotAppearProbability(), 0.0001);
         
         
     }

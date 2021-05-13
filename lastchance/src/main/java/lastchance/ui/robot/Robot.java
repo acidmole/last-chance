@@ -26,7 +26,9 @@ public class Robot {
      * @param screenHeight Screen height where a robot will land
      */
     
-    public Robot (Image i, double height, double width, double screenWidth, double screenHeight) {
+    public Robot (double height, double width, double screenWidth, double screenHeight) {
+        
+        Image i = new Image("file:robo.png");
         this.image = new ImageView(i);
         this.isLanded = false;
         this.screenHeight = screenHeight;
@@ -64,7 +66,7 @@ public class Robot {
      */
     public void fall() {
         this.image.setY(this.image.getY() + 0.1);
-        if(this.image.getY() >= (this.screenHeight)-60) {
+        if(this.image.getY() >= this.screenHeight-85) {
             this.land();
         }
     }
@@ -82,7 +84,7 @@ public class Robot {
      */
     public void land() {
         this.isLanded = true;
-        this.image.setY(this.screenHeight-60);
+        this.image.setY(this.screenHeight-85);
         if (this.image.getX() < this.screenWidth/2) {
             this.walkingSpeed = 0.1;
         } else {

@@ -7,7 +7,9 @@ package lastchance.dao;
 
 import java.util.List;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,7 +27,8 @@ public class FileScoreDao implements ScoreDao {
                 String row = scanner.nextLine();
                 this.scoreList.add(row);
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            
         }
     }
 
@@ -41,8 +44,9 @@ public class FileScoreDao implements ScoreDao {
             for (String row : scoreList) {
                 fw.write(row);
             }
+            fw.close();
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             return false;
         }
     }

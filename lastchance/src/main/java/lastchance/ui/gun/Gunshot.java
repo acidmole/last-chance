@@ -19,12 +19,12 @@ public class Gunshot extends Circle {
     private boolean destroyed;
     
     
-    public Gunshot(double angleX, double angleY) {
+    public Gunshot(double startX, double startY, double angleX, double angleY, double gunLength) {
         super();
         this.setRadius(6);
         this.setStroke(Color.BLACK);
-        this.setCenterX(400);
-        this.setCenterY(600);
+        this.setCenterX(startX + 0.5 * angleX * gunLength);
+        this.setCenterY(startY - 0.5 * angleY * gunLength);
         this.movement = new Point2D(angleX * 0.5, angleY * -0.5);
         this.destroyed = false;
         

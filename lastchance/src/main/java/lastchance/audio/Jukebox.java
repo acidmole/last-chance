@@ -51,6 +51,5 @@ public class Jukebox extends Thread {
         System.out.println("Stopping.");
         this.keepPlaying = false;
         this.player.close();
-        this.interrupt();
     }
 }

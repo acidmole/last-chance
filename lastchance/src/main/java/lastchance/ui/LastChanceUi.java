@@ -9,15 +9,12 @@ import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lastchance.audio.Jukebox;
@@ -52,53 +49,50 @@ public class LastChanceUi extends Application {
         layout.setPrefSize(800, 600);
         Base base = new Base();
         layout.getChildren().add(base);
-        Gun gun = new Gun();
+        Gun gun = new Gun(395, 495, 12, 160);
         layout.getChildren().add(gun);
+        
         ScoreboardLayout sbLayout = new ScoreboardLayout();
+
         layout.getChildren().add(sbLayout);
         sbLayout.setPrefWidth(800);
         sbLayout.setPrefHeight(50);
-        Jukebox jukebox = new Jukebox("klzmr.mp3");
         
+        Jukebox jukebox = new Jukebox("Stakula_Nights.mp3");
+        ArrayList<Robot> robots = new ArrayList<>();
         
-        Image image = new Image("file:robo.png");
+        // main scene
         
-        
-        List<Robot> robots = new ArrayList<>();
-        Random rn = new Random();
-        
-        Scene scene = new Scene(layout);
-        scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        Scene mainScene = new Scene(layout);
+        mainScene.setOnMouseClicked((MouseEvent event) -> {
+            layout.getChildren().add(gun.fire());
+        });
+        mainScene.setOnMouseMoved((MouseEvent event) -> {
+            gun.rotateWithMouse(event.getX(), event.getY());
+        });
+        mainScene.setOnKeyReleased((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.LEFT) {
+                gun.rotateLeft();
+            }
+            if (event.getCode() == KeyCode.RIGHT) {
+                gun.rotateRight();
+            }
+            if (event.getCode() == KeyCode.UP) {
                 layout.getChildren().add(gun.fire());
             }
         });
-        
-        scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                gun.rotateWithMouse(event.getX(), event.getY());
-            }
-        });
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.LEFT) {
-                    gun.rotateLeft();
-                }
-                if (event.getCode() == KeyCode.RIGHT) {
-                    gun.rotateRight();
-                }
-                if (event.getCode() == KeyCode.UP) {
-                    layout.getChildren().add(gun.fire());
-                }
-            }
-        });
+        
+        // paused scene
+        Pane pauseLayout = new Pane();
+        pauseLayout.setPrefSize(800, 600);
+        Scene pauseScene = new Scene(pauseLayout);
+        
 
         jukebox.start();
-        stage.setScene(scene);
+        stage.setMaxHeight(600);
+        stage.setMaxWidth(800);
+        stage.setScene(mainScene);
         stage.show();
                 
         
@@ -114,20 +108,21 @@ public class LastChanceUi extends Application {
                         this.stop();
                     }
                 });
-                
+                /*
                 gun.getGunshots().forEach(gunshot -> {
-                        gunshot.move();
-                        if(gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800 
-                                || gunshot.getCenterY() < 0 || gunshot.getCenterY() > 600) {
-                            gunshot.destroy();
-                        }
+                    gunshot.move();
+                    if(gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800 
+                            || gunshot.getCenterY() < 50 || gunshot.getCenterY() > 600) {
+                        gunshot.destroy();
+                    }
                             
                 });
-                
+                */
                 
                 gun.getGunshots().forEach(gunshot -> {
-                    for(Robot robot : robots) {
-                        if(gunshot.getCenterY() < 0 || gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800) {
+                    gunshot.move();
+                    robots.forEach(robot -> {
+                        if(gunshot.getCenterY() < 50 || gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800) {
                             gunshot.destroy();
                         } else if(gunshot.intersects(robot.getImage().getBoundsInParent())) {
                             robot.destroy();
@@ -135,7 +130,7 @@ public class LastChanceUi extends Application {
                             lcService.addPoints();
                             sbLayout.setScore(lcService.getScoreboard().getScore());
                         }
-                    }
+                    });
                 });
                 
                 List<Gunshot> destroyedGunshots = gun.getGunshots().stream()
@@ -155,7 +150,7 @@ public class LastChanceUi extends Application {
                 });
                 
                 if(lcService.hasNewRobotAppeared()) {
-                    Robot robot = new Robot(image, 40, 20, 800, 600);
+                    Robot robot = new Robot(40, 20, 800, 600);
                     layout.getChildren().add(robot.getImage());
                     robots.add(robot);
                 }

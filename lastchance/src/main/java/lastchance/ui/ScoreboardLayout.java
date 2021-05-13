@@ -14,6 +14,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 /**
  * This class is purely for layout of the scoreboard. 
@@ -22,19 +23,24 @@ import javafx.scene.layout.HBox;
 
 public class ScoreboardLayout extends HBox {
     
-    private Button pause;
+    private Button quit;
     private Button restart;
     private Label score;
-
     
     public ScoreboardLayout() {
         super(10);
         this.setSpacing(80);
-        this.pause = new Button("Quit");
+        this.quit = new Button("Quit");
         this.restart = new Button("Restart");
         this.score = new Label("Pisteet: ");
         
-        this.getChildren().add(this.pause);
+        try {
+            this.score.setFont(Font.loadFont("file:ErbosDraco1StNbpRegular-99V5.ttf", 60));
+        } catch (Exception e) {
+            
+        }
+        
+        this.getChildren().add(this.quit);
         this.getChildren().add(this.restart);
         this.getChildren().add(this.score);
         

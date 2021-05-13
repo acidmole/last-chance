@@ -18,12 +18,23 @@ import javafx.scene.shape.Circle;
 public class Gun extends Rectangle {
     
     private List<Gunshot> gunshots;
+    private final double cornerX;
+    private final double cornerY;
+    private final double diameter;
     
     /**
      * Constructor draws the gun and sets its color
+     * @param cornerX gun's starting point on x axis
+     * @param cornerY gun's starting point on y axis
+     * @param diameter gun's diameter
+     * @param length gun's length
      */
-    public Gun() {
-        super(395, 520, 12, 160);
+    public Gun(double cornerX, double cornerY, double diameter, double length) {
+        super(cornerX, cornerY, diameter, length);
+        this.cornerX = cornerX;
+        this.cornerY = cornerY;
+        this.diameter = diameter;
+        
         this.setStroke(Color.BLACK);
         this.gunshots = new ArrayList<>();
     }
@@ -69,7 +80,7 @@ public class Gun extends Rectangle {
     public Circle fire() {
         double shotY = Math.cos(Math.toRadians(this.getRotate()));
         double shotX = Math.sin(Math.toRadians(this.getRotate()));
-        Gunshot newGunshot = new Gunshot(shotX, shotY);
+        Gunshot newGunshot = new Gunshot((this.cornerX + this.diameter/2), this.cornerY + 80, shotX, shotY, 160.0);
         this.gunshots.add(newGunshot);
         return newGunshot;
     }
