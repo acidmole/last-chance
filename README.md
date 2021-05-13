@@ -31,3 +31,13 @@ Raportti tästä löytyy osoitteesta target/site/checkstyle.html
 * 
 [Luokka- ja sekvenssikaavio](https://github.com/acidmole/last-chance/blob/master/documents/arkkitehtuuri.md)
 * [Työaikakirjanpito](https://docs.google.com/spreadsheets/d/163KEEXksQ6WTQZjbq344-tCZUor9Yi9uiTqxldqkszk/edit?usp=sharing)
+
+
+## Tekijänoikeudet
+Ohjelman tekijänoikeudet ovat tekijällä ja edelleen hyödynnettävissä Creative Commons BY-SA -lisenssin mukaisesti.
+
+Musiikki:
+"Stakula Nights" säv. ja sov. Heikki Venhola. Äänitys ja miksaus Eero Kaukomies / Content Union Studios huhti-toukokuussa 2021. Edelleen hyödynnettävissä CC-BY-SA -rajoituksin.
+
+Fontti:
+"Erbos Draco Monospaced NBP Font", total FontGeek DTF, Ltd. Käytetään CC-BY-SA -lisenssillä.
