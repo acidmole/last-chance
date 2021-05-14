@@ -6,8 +6,7 @@
 package lastchance.audio;
 
 import java.io.FileInputStream;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.advanced.AdvancedPlayer;
+import java.io.FileNotFoundException;
 
 /**
  * A class responsible for playing audio files run by threads
@@ -17,14 +16,15 @@ public class Jukebox extends Thread {
    
     private String fileURI;
     private boolean keepPlaying;
-    private AdvancedPlayer player;
+    private ImprovedAdvancedPlayer player;
+    private int startingFrame;
     
     /**
      * 
      * @param fileURI URI for FileInputStream
      * @throws Exception if file can't be loaded
      */
-    public Jukebox(String fileURI) throws Exception{
+    public Jukebox(String fileURI) throws FileNotFoundException {
         this.fileURI = fileURI;
         this.keepPlaying = true;
     }
@@ -34,12 +34,12 @@ public class Jukebox extends Thread {
      */
     @Override
     public void run() {
-        
+        System.out.println("Here I am");
         try {
             System.out.println("Playing.");
             do {
                 FileInputStream stream = new FileInputStream(this.fileURI);
-                this.player = new AdvancedPlayer(stream);
+                this.player = new ImprovedAdvancedPlayer(stream);
                 this.player.play();
             } while (this.keepPlaying);
         } catch (Exception e) {
@@ -47,9 +47,20 @@ public class Jukebox extends Thread {
         }
     }
     
+    /**
+     * Method for pausing music.
+     * 
+     * @return frame to carry on from after pause
+     */
+    public int pause() {
+        return(this.player.pause());
+    }
+    
+    /**
+     * Method for ending music for good. Cannot be restored
+     */
     public void close() {
         System.out.println("Stopping.");
-        this.keepPlaying = false;
         this.player.close();
     }
 }
