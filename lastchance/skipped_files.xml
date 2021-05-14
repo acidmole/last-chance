@@ -7,8 +7,6 @@
 <suppressions>
     <suppress files="lastchance.ui.LastChanceUi.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="lastchance.ui.Base.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="lastchance.ui.Dashboard.java" checks="[a-zA-Z0-9]*"/>
-    <suppress files="lastchance.ui.Scoreboard.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="lastchance.ui.ScoreboardLayout.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="lastchance.ui.gun.Gun.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="lastchance.ui.gun.Gunshot.java" checks="[a-zA-Z0-9]*"/>

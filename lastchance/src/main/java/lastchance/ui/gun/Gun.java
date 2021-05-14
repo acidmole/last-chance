@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javafx.scene.shape.Circle;
 
 /**
- * A class for drawing (sic!) the gun and it's functions
+ * A class for drawing (sic!) the gun, rotating and firing it
  * 
  */
 public class Gun extends Rectangle {

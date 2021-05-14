@@ -5,6 +5,7 @@
  */
 package lastchance.ui;
 
+import java.io.FileNotFoundException;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lastchance.audio.Jukebox;
@@ -31,15 +33,19 @@ import lastchance.ui.robot.Robot;
 public class LastChanceUi extends Application {
     
     private LastChanceService lcService;
+    private Jukebox jukebox;
+    private boolean paused;
     
     @Override
     public void init() {
         String[] configs = {"10", "0.001"};
         try {
-            FileScoreDao scoreDao = new FileScoreDao("foo.txt");
+            FileScoreDao scoreDao = new FileScoreDao("scores.txt");
             lcService = new LastChanceService(scoreDao, configs);
+            jukebox = new Jukebox("Stakula_Nights.mp3");
         } catch (Exception e) {
         }
+        paused = true;
     }
     
     @Override
@@ -58,46 +64,9 @@ public class LastChanceUi extends Application {
         sbLayout.setPrefWidth(800);
         sbLayout.setPrefHeight(50);
         
-        Jukebox jukebox = new Jukebox("Stakula_Nights.mp3");
         ArrayList<Robot> robots = new ArrayList<>();
         
-        // main scene
-        
-        Scene mainScene = new Scene(layout);
-        mainScene.setOnMouseClicked((MouseEvent event) -> {
-            layout.getChildren().add(gun.fire());
-        });
-        mainScene.setOnMouseMoved((MouseEvent event) -> {
-            gun.rotateWithMouse(event.getX(), event.getY());
-        });
-        mainScene.setOnKeyReleased((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.LEFT) {
-                gun.rotateLeft();
-            }
-            if (event.getCode() == KeyCode.RIGHT) {
-                gun.rotateRight();
-            }
-            if (event.getCode() == KeyCode.UP) {
-                layout.getChildren().add(gun.fire());
-            }
-        });
-
-        
-        // paused scene
-        Pane pauseLayout = new Pane();
-        pauseLayout.setPrefSize(800, 600);
-        Scene pauseScene = new Scene(pauseLayout);
-        
-
-        jukebox.start();
-        stage.setMaxHeight(600);
-        stage.setMaxWidth(800);
-        stage.setScene(mainScene);
-        stage.show();
-                
-        
-        new AnimationTimer() {
-            
+        AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 
@@ -108,17 +77,7 @@ public class LastChanceUi extends Application {
                         this.stop();
                     }
                 });
-                /*
-                gun.getGunshots().forEach(gunshot -> {
-                    gunshot.move();
-                    if(gunshot.getCenterX() < 0 || gunshot.getCenterX() > 800 
-                            || gunshot.getCenterY() < 50 || gunshot.getCenterY() > 600) {
-                        gunshot.destroy();
-                    }
-                            
-                });
-                */
-                
+
                 gun.getGunshots().forEach(gunshot -> {
                     gunshot.move();
                     robots.forEach(robot -> {
@@ -156,12 +115,91 @@ public class LastChanceUi extends Application {
                 }
                 
             }
-        }.start();
+            
+        };
+        
+        // main scene
+        
+        Scene mainScene = new Scene(layout);
+        
+        mainScene.setOnMouseClicked((MouseEvent event) -> {
+            if(!paused) {
+                layout.getChildren().add(gun.fire());
+            }
+        });
+        
+        mainScene.setOnMouseMoved((MouseEvent event) -> {
+            if(!paused) {
+                gun.rotateWithMouse(event.getX(), event.getY());
+            }
+        });
+        
+        mainScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if(!paused) {
+                    if (event.getCode() != null) switch (event.getCode()) {
+                        case LEFT:
+                            gun.rotateLeft();
+                            break;
+                        case RIGHT:
+                            gun.rotateRight();
+                            break;
+                        case UP:
+                            layout.getChildren().add(gun.fire());
+                            break;
+                        case ESCAPE:
+                            paused = true;
+                            timer.stop();
+                            jukebox.pause();
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    if(event.getCode() != null) {
+                        paused = false;
+                        timer.start();
+                        try {
+                            Jukebox newJukebox = new Jukebox("Stakula_Nights.mp3");
+                            newJukebox.start();
+                        } catch (FileNotFoundException e) {
+                            
+                        }
+                    }
+                }
+            }
+        });
+
+        
+        // paused scene
+        Pane pauseLayout = new Pane();
+        pauseLayout.setPrefSize(800, 600);
+        Scene pauseScene = new Scene(pauseLayout);
+        
+
+        stage.setMaxHeight(600);
+        stage.setMaxWidth(800);
+
+        stage.setScene(mainScene);
+        stage.show();
+        paused = false;
+        jukebox.start();
+        timer.start();
+                
+        
+
         
         }
     
     @Override
     public void stop() {
+        if(lcService.quit("Niilo N.")) {
+            System.out.println("A-ok");
+        } else {
+            System.out.println("Not ok!");
+        }
+        jukebox.close();
         
     }
     
