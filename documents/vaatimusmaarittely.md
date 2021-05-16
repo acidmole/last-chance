@@ -13,8 +13,8 @@ Peliin on suunnitteilla seuraavat toiminnallisuudet:
 * Jos robotti laskeutuu maahan, se lähtee kulkemaan maata pitkin kohti komentokeskusta. (tehty)
 * Jos robotti osuu komentokeskukseen, peli päättyy. (tehty)
 * Peli vaikeutuu säännöllisin väliajoin, kun robottien ilmestymisnopeus kasvaa. (tehty)
-* Parhaista tuloksista pidetään kirjaa.
-* Pelissä on jännittävä, kiehtova ja leikillinen itämaistyylinen musiikki.
+* Parhaista tuloksista pidetään kirjaa. (tehty)
+* Pelissä on jännittävä, kiehtova ja leikillinen itämaistyylinen musiikki. (tehty)
 
 ## Mahdollisia lisätoiminnallisuuksia jatkokehitystä ajatellen
 Jatkossa sovellukseen voisi kehittää esim.:
@@ -24,5 +24,4 @@ Jatkossa sovellukseen voisi kehittää esim.:
 * rajoitettu ammusten määrä (sekä ilmasta laskeutuvat ammustäydennykset)
 
 ## Toimintaympäristön rajoitteet
-* Sovelluksen tulee toimia Linux, OSX sekä Windows-käyttöjärjestelmillä
-* Pistetietokanta tallennetaan paikallisesti
+* Sovelluksen tulee toimia Linux-ympäristössä
