@@ -5,13 +5,13 @@
  */
 package lastchance.ui;
 
+import javafx.geometry.Pos;
 import javafx.scene.layout.Pane;
 
 /**
  *
  * @author hede
  */
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -23,30 +23,26 @@ import javafx.scene.text.Font;
 
 public class ScoreboardLayout extends HBox {
     
-    private Button quit;
-    private Button restart;
     private Label score;
-    
+    private ButtonGrid buttonGrid;
     public ScoreboardLayout() {
-        super(10);
-        this.setSpacing(80);
-        this.quit = new Button("Quit");
-        this.restart = new Button("Restart");
+        super();
         this.score = new Label("Pisteet: ");
-        
+        buttonGrid = new ButtonGrid();
         try {
             this.score.setFont(Font.loadFont("file:ErbosDraco1StNbpRegular-99V5.ttf", 60));
         } catch (Exception e) {
-            
         }
-        
-        this.getChildren().add(this.quit);
-        this.getChildren().add(this.restart);
+        this.getChildren().add(buttonGrid);
         this.getChildren().add(this.score);
-        
     }
     
     public void setScore(int score) {
         this.score.setText("Pisteet: " + score);
     }
+    
+    public ButtonGrid getButtonGrid() {
+        return this.buttonGrid;
+    }
+    
 }

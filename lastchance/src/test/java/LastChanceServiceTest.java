@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import java.io.FileInputStream;
+import java.util.Properties;
+import lastchance.dao.FileScoreDao;
 import lastchance.domain.LastChanceService;
 import lastchance.domain.Scoreboard;
 import org.junit.After;
@@ -20,20 +23,22 @@ import static org.junit.Assert.*;
 public class LastChanceServiceTest {
     
     private Scoreboard sb;
-    private FakeScoreDao scoreDao;
+    private FileScoreDao scoreDao;
     private LastChanceService lcs;
+    private Properties p;
     
     public LastChanceServiceTest() {
+        p = new Properties();
     }
     
     @Before
     public void setUp() {
         try {
-            scoreDao = new FakeScoreDao("foo");
+            scoreDao = new FileScoreDao("foo");
+            p.load(new FileInputStream("lastchance.properties"));
         } catch (Exception e) {
         }
-        String[] emptyArgs = {"100", "0.0005"};
-        lcs = new LastChanceService(scoreDao, emptyArgs);
+        lcs = new LastChanceService(scoreDao, p);
         lcs.getScoreboard().setScore(500);
         lcs.quit("Jorma");
     }
@@ -46,9 +51,14 @@ public class LastChanceServiceTest {
     @Test
     public void addPointsWorksProperly() {
         lcs.addPoints();
-        assertEquals(600, lcs.getScoreboard().getScore());
-        
-        
+        assertEquals(510, lcs.getScoreboard().getScore());
     }
+    
+    @Test
+    public void restartNullifiesPoints() {
+        lcs.restart();
+        assertEquals(0, lcs.getScoreboard().getScore());
+    }
+    
 }
   

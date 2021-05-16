@@ -5,10 +5,13 @@
  */
 package lastchance.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 import lastchance.dao.FileScoreDao;
-import lastchance.dao.ScoreDao;
-
 
 /**
  * The service for managing everything but the UI
@@ -16,9 +19,10 @@ import lastchance.dao.ScoreDao;
 public class LastChanceService {
     
     private Scoreboard sb;
-    private ScoreDao scoreDao;
-    private int hitValue;
+    private FileScoreDao scoreDao;
+    private final int hitValue;
     private double robotAppearProbability;
+    private final double originalRobotAppearProbability;
     Random rnd;
     
     /**
@@ -26,15 +30,14 @@ public class LastChanceService {
      * It also sets the probability of generating new robots on every frame
      * 
      * @param scoreDao Data Access Object to store and load the score history
-     * @param args arguments to run the app: 
-     * [0] for robot score value
-     * [1] for robot appear probability on each frame cycle
+     * @param properties
      */
-    public LastChanceService(ScoreDao scoreDao, String[] args) {
+    public LastChanceService(FileScoreDao scoreDao, Properties properties) {
         this.scoreDao = scoreDao;
         this.sb = new Scoreboard();
-        this.hitValue = Integer.valueOf(args[0]);
-        this.robotAppearProbability = Double.valueOf(args[1]);
+        this.hitValue = Integer.valueOf(properties.getProperty("hitValue"));
+        this.robotAppearProbability = Double.valueOf(properties.getProperty("robotAppearProbability"));
+        this.originalRobotAppearProbability = this.robotAppearProbability;
         rnd = new Random();
     }
     
@@ -79,19 +82,37 @@ public class LastChanceService {
      * @return if UI has to draw a new robot
      */
     public boolean hasNewRobotAppeared() {
-        
         return (rnd.nextDouble() < this.robotAppearProbability);
     }
     
-    // not yet finished (or even started)
-
     /**
-     * Game restart method
+     * Game restart method, restarting scoreboard and robot appearing probability
      * 
      * @return if restart and file storing was succesful
      */
     public boolean restart() {
+        this.robotAppearProbability = originalRobotAppearProbability;
         this.sb.setScore(0);
         return false;
+    }
+    
+    public int sortAndFind() {
+        ArrayList<Integer> justScores = new ArrayList<>();
+        
+        for(String scoreAndName : scoreDao.getTopScores()) {
+            String[] score = scoreAndName.split(";");
+            int scoreInt = Integer.valueOf(score[1]);
+            justScores.add(scoreInt);
+        }
+        
+        Collections.sort(justScores, Collections.reverseOrder());
+        
+        int i=1;
+        for(Integer score : justScores) {
+            if(score > this.sb.getScore()) {
+                i++;
+            } else break;
+        }
+        return i;
     }
 }

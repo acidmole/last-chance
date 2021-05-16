@@ -12,18 +12,22 @@ import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 
 /**
- *
  * @author hede
+ * 
+ * Improved mp3 player that keeps track of the frame that it was stopped to.
+ *
+ * @see javazoom.jl.player.advanced.AdvancedPlayer;
+ * 
+ *
  */
+
 public class ImprovedAdvancedPlayer extends AdvancedPlayer {
     private int pausedOnFrame;
     private PlaybackListener listener;
     
     /**
      *
-     * @param stream InputStream object
-     * 
-     * @see lastchance.audio.Jukebox
+     * @param stream InputStream object to be played
      * 
      * @throws JavaLayerException
      */
@@ -32,11 +36,6 @@ public class ImprovedAdvancedPlayer extends AdvancedPlayer {
         pausedOnFrame = 0;
         
         this.setPlayBackListener(new PlaybackListener() {
-            @Override
-            public void playbackStarted(PlaybackEvent e) {
-                System.out.println("Song started");
-            }
-            
             @Override
             public void playbackFinished(PlaybackEvent e) {
                 pausedOnFrame = e.getFrame();
@@ -51,8 +50,6 @@ public class ImprovedAdvancedPlayer extends AdvancedPlayer {
      */
     public int pause() {
         this.stop();
-        System.out.println(pausedOnFrame);
-        this.close();
         return pausedOnFrame;
     }
     

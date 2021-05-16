@@ -54,6 +54,7 @@
                         <exclude>lastchance/ui/*</exclude>
                         <exclude>lastchance/ui/gun/*</exclude>
                         <exclude>lastchance/ui/robot/*</exclude>
+                        <exclude>lastchance/audio/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

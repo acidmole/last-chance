@@ -19,16 +19,15 @@ import static org.junit.Assert.*;
 public class FileScoreDaoTest {
     
     FileScoreDao scoreDao;
+    FileScoreDao anotherScoreDao;
     
     public FileScoreDaoTest() {
     }
     
     @Before
     public void setUp() {
-        try {
-            scoreDao = new FileScoreDao("foo");
-        } catch (Exception e) {
-        }
+        scoreDao = new FileScoreDao("foo");
+        anotherScoreDao = new FileScoreDao("scores.txt");
         scoreDao.addToList("Jorma", 15);
     }
     
@@ -36,4 +35,24 @@ public class FileScoreDaoTest {
     public void addedPlayerIsFoundOnTheList() {
         assertEquals("Jorma;15", scoreDao.getTopScores().get(0));
     }
+    
+    @Test
+    public void fileFoundIsRight() {
+        assertFalse(scoreDao.getFileFound());
+        assertTrue(anotherScoreDao.getFileFound());
+    }
+    
+    @Test
+    public void writeToFileReturnsRightValue() {
+        try {
+            scoreDao.writeToFile();
+            anotherScoreDao.writeToFile();
+        } catch(Exception e) {
+        }
+        assertFalse(scoreDao.getFileFound());
+        assertTrue(anotherScoreDao.getFileFound());
+
+    }
+    
+    
 }

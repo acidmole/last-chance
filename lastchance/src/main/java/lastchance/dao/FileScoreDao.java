@@ -5,7 +5,6 @@
  */
 package lastchance.dao;
 
-import java.util.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -13,11 +12,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FileScoreDao implements ScoreDao {
-    private List<String> scoreList;
+/**
+ *
+ * @author hede
+ */
+public class FileScoreDao {
+    private ArrayList<String> scoreList;
     private final String file;
+    private boolean fileFound;
     
-    public FileScoreDao(String file) throws Exception {
+    /**
+     *
+     * @param file where the scores are archived
+     */
+    public FileScoreDao(String file) {
         this.file = file;
         scoreList = new ArrayList<>();
         
@@ -26,33 +34,61 @@ public class FileScoreDao implements ScoreDao {
             while (scanner.hasNextLine()) {
                 String row = scanner.nextLine();
                 this.scoreList.add(row);
+                this.fileFound = true;
             }
         } catch (FileNotFoundException e) {
-            
+            this.fileFound = false;
         }
     }
 
-    @Override
-    public List<String> getTopScores() {
+    /**
+     *
+     * @return list of top scores 
+     */
+    public ArrayList<String> getTopScores() {
         return this.scoreList;
     }
     
-    @Override
+    /**
+     * A method for saving scores.
+     * 
+     * @return if save succeeded
+     * @throws Exception if file is not writable
+     */
     public boolean writeToFile() throws Exception {
-        try {
-            FileWriter fw = new FileWriter(file);
-            for (String row : scoreList) {
-                fw.write(row);
+        if(this.fileFound) {
+            try {
+                FileWriter fw = new FileWriter(file);
+                for (String row : scoreList) {
+                    fw.write(row + "\n");
+                }
+                fw.close();
+                return true;
+            } catch (IOException e) {
+                return false;
             }
-            fw.close();
-            return true;
-        } catch (IOException e) {
+        } else {
             return false;
         }
     }
     
-    @Override
+    /** 
+     * Adds a score with players name to score list.
+     * 
+     * @param player player's name
+     * @param score players score
+     * 
+     * @see getFileFound()
+     */
     public void addToList(String player, int score) {
         this.scoreList.add(player + ";" + score);
+    }
+    
+    /**
+     * 
+     * @return if a high score file was found
+     */
+    public boolean getFileFound() {
+        return this.fileFound;
     }
 }

@@ -5,16 +5,16 @@
  */
 package lastchance.ui;
 
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import lastchance.ui.gun.Gun;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyEvent;
@@ -24,6 +24,12 @@ import lastchance.dao.FileScoreDao;
 import lastchance.domain.LastChanceService;
 import lastchance.ui.gun.Gunshot;
 import lastchance.ui.robot.Robot;
+import java.util.Properties;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.text.Font;
 
 
 /**
@@ -35,18 +41,23 @@ public class LastChanceUi extends Application {
     private LastChanceService lcService;
     private Jukebox jukebox;
     private boolean paused;
+    private int jukeboxPauseFrame;
+    private ArrayList<Robot> robots;
     
     @Override
-    public void init() {
-        String[] configs = {"10", "0.001"};
-        try {
-            FileScoreDao scoreDao = new FileScoreDao("scores.txt");
-            lcService = new LastChanceService(scoreDao, configs);
-            jukebox = new Jukebox("Stakula_Nights.mp3");
-        } catch (Exception e) {
-        }
+    public void init() throws Exception {
+        Properties properties = new Properties();
+        
+        properties.load(new FileInputStream("lastchance.properties"));
+        
+        jukebox = new Jukebox("Stakula_Nights.mp3", 0);
+        FileScoreDao scoreDao = new FileScoreDao("scores.txt");
+        lcService = new LastChanceService(scoreDao, properties);
+        robots = new ArrayList<>();
+        jukeboxPauseFrame = 0;
         paused = true;
     }
+    
     
     @Override
     public void start(Stage stage) throws Exception {
@@ -59,13 +70,12 @@ public class LastChanceUi extends Application {
         layout.getChildren().add(gun);
         
         ScoreboardLayout sbLayout = new ScoreboardLayout();
-
         layout.getChildren().add(sbLayout);
-        sbLayout.setPrefWidth(800);
-        sbLayout.setPrefHeight(50);
-        
-        ArrayList<Robot> robots = new ArrayList<>();
-        
+        Scene mainScene = new Scene(layout);
+
+        TextInputDialog scoreDialog = new TextInputDialog();
+        scoreDialog.setHeaderText("Tuloksesi oli " + lcService.sortAndFind() + ". paras! Anna vielä nimesi.");
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -73,7 +83,7 @@ public class LastChanceUi extends Application {
                 robots.forEach(robot -> {
                     robot.move();
                     if(base.intersects(robot.getImage().getBoundsInParent())) {
-                        jukebox.close();
+                        jukebox.pause();
                         this.stop();
                     }
                 });
@@ -118,10 +128,60 @@ public class LastChanceUi extends Application {
             
         };
         
+        // continue button 
+        Button cont = new Button("Continue");
+        cont.setFont(Font.font("Verdana", 40));
+        cont.setLayoutX(300);
+        cont.setLayoutY(200);
+        cont.setVisible(false);
+        layout.getChildren().add(cont);
+        
+        
+        //button action listeners
+        cont.setOnAction((event) -> {
+            cont.setVisible(false);
+            paused = false;
+            Jukebox newJukebox = new Jukebox("Stakula_Nights.mp3", 0);
+            jukebox = newJukebox;
+            jukebox.start();
+            timer.start();
+        });
+        
+        sbLayout.getButtonGrid().getQuitButton().setOnAction((event) -> {
+            timer.stop();
+            Optional<String> result = scoreDialog.showAndWait();
+            if(result.isPresent()) {
+                lcService.quit(scoreDialog.getEditor().getText());
+                this.stop();
+                stage.close();
+            } else {
+                timer.start();
+            }
+        });
+        
+        sbLayout.getButtonGrid().getRestartButton().setOnAction((event) -> {
+            timer.stop();
+            jukebox.pause();
+            Optional<String> result = scoreDialog.showAndWait();
+            if(result.isPresent()) {
+                lcService.quit(scoreDialog.getEditor().getText());
+                lcService.restart();
+                layout.getChildren().clear();
+                layout.getChildren().add(base);
+                layout.getChildren().add(gun);
+                layout.getChildren().add(sbLayout);
+                robots.clear();
+                gun.getGunshots().clear();
+            }
+            Jukebox anotherJukebox = new Jukebox("Stakula_Nights.mp3", 0);
+            jukebox = anotherJukebox;
+            scoreDialog.showAndWait();
+            jukebox.start();
+            timer.start();
+        });
+
+        
         // main scene
-        
-        Scene mainScene = new Scene(layout);
-        
         mainScene.setOnMouseClicked((MouseEvent event) -> {
             if(!paused) {
                 layout.getChildren().add(gun.fire());
@@ -131,6 +191,15 @@ public class LastChanceUi extends Application {
         mainScene.setOnMouseMoved((MouseEvent event) -> {
             if(!paused) {
                 gun.rotateWithMouse(event.getX(), event.getY());
+            }
+        });
+        
+        mainScene.setOnMouseExited((MouseEvent event ) -> {
+            if(!paused) {
+                paused = true;
+                timer.stop();
+                jukeboxPauseFrame = jukebox.pause();
+                cont.setVisible(true);
             }
         });
         
@@ -151,56 +220,29 @@ public class LastChanceUi extends Application {
                         case ESCAPE:
                             paused = true;
                             timer.stop();
-                            jukebox.pause();
+                            jukeboxPauseFrame = jukebox.pause();
+                            cont.setVisible(true);
                             break;
                         default:
                             break;
-                    }
-                } else {
-                    if(event.getCode() != null) {
-                        paused = false;
-                        timer.start();
-                        try {
-                            Jukebox newJukebox = new Jukebox("Stakula_Nights.mp3");
-                            newJukebox.start();
-                        } catch (FileNotFoundException e) {
-                            
-                        }
                     }
                 }
             }
         });
 
         
-        // paused scene
-        Pane pauseLayout = new Pane();
-        pauseLayout.setPrefSize(800, 600);
-        Scene pauseScene = new Scene(pauseLayout);
-        
-
         stage.setMaxHeight(600);
         stage.setMaxWidth(800);
-
         stage.setScene(mainScene);
         stage.show();
         paused = false;
         jukebox.start();
         timer.start();
-                
-        
 
-        
         }
-    
     @Override
     public void stop() {
-        if(lcService.quit("Niilo N.")) {
-            System.out.println("A-ok");
-        } else {
-            System.out.println("Not ok!");
-        }
-        jukebox.close();
-        
+        jukebox.pause();
     }
     
     
