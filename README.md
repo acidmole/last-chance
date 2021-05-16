@@ -1,7 +1,8 @@
 # Ohjelmistotekniikka, harjoitustyö
 
-Ohjelmasta on tehty 
-[release](https://github.com/acidmole/last-chance/releases/tag/Viikko5).
+Ohjelmasta on tehty lopullinen
+[release](https://github.com/acidmole/last-chance/releases/tag/Final).
+
 
 
 
