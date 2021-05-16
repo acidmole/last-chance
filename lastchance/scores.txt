@@ -8,3 +8,5 @@ Niilo N.;0
 Niilo N.;0
 null;10
 Pertti;30
+;0
+;0

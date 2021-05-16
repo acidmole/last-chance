@@ -85,6 +85,9 @@ public class LastChanceUi extends Application {
                     if(base.intersects(robot.getImage().getBoundsInParent())) {
                         jukebox.pause();
                         this.stop();
+                        scoreDialog.show();
+                        lcService.quit(scoreDialog.getEditor().getText());
+                        stage.close();
                     }
                 });
 

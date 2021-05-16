@@ -31,7 +31,6 @@ public class Jukebox extends Thread {
             this.fileURI = fileURI;
             this.keepPlaying = true;
             this.startingFrame = startingFrame;
-            System.out.println(this.startingFrame);
         } catch (Exception e) {
         }
     }
@@ -41,9 +40,7 @@ public class Jukebox extends Thread {
      */
     @Override
     public void run() {
-        System.out.println("Here I am");
         try {
-            System.out.println("Playing.");
             do {
                 FileInputStream stream = new FileInputStream(this.fileURI);
                 this.player = new ImprovedAdvancedPlayer(stream);
@@ -64,7 +61,6 @@ public class Jukebox extends Thread {
     public int pause() {
         try {
             this.keepPlaying = false;
-            System.out.println("Stopping.");
             return this.player.pause();
         } catch(Exception e) {
             return 0;
