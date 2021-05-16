@@ -15,14 +15,14 @@ Ohjelman lähdekoodia voi testata ja testikattavuutta seurata komennolla
 ```
 mvn test jacoco:report
 ```
-Testiraportti löytyy hakemistosta target/site/jacoco/index.html
+Testiraportti löytyy hakemistosta _target/site/jacoco/index.html_
 
 
 Koodin puhtautta voi tarkistaa käskyllä
 ```
 mvn jxr:jxr checkstyle:checkstyle
 ```
-Raportti tästä löytyy osoitteesta target/site/checkstyle.html
+Raportti tästä löytyy osoitteesta _target/site/checkstyle.html_
 
 
 ## Dokumentaatio
